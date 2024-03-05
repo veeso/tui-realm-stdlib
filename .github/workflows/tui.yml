@@ -19,7 +19,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --no-fail-fast --no-default-features --features tui
+          args: --no-fail-fast --no-default-features --features tui,crossterm
       - name: Format
         run: cargo fmt --all -- --check
       - name: Clippy
