@@ -121,4 +121,13 @@ mod tests {
 
         assert_eq!(component.state(), State::None);
     }
+
+    #[test]
+    fn test_various_text_inputs() {
+        let _ = Label::default().text("str");
+        let _ = Label::default().text(*&"*&str");
+        let _ = Label::default().text(String::from("String"));
+        let _ = Label::default().text(&String::from("&String"));
+        let _ = Label::default().text(format!("Format"));
+    }
 }
