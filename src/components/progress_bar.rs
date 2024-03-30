@@ -46,8 +46,8 @@ impl ProgressBar {
         self
     }
 
-    pub fn label<S: AsRef<str>>(mut self, s: S) -> Self {
-        self.attr(Attribute::Text, AttrValue::String(s.as_ref().to_string()));
+    pub fn label<S: Into<String>>(mut self, s: S) -> Self {
+        self.attr(Attribute::Text, AttrValue::String(s.into()));
         self
     }
 
