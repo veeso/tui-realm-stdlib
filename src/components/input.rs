@@ -161,8 +161,8 @@ impl Input {
         self
     }
 
-    pub fn value<S: AsRef<str>>(mut self, s: S) -> Self {
-        self.attr(Attribute::Value, AttrValue::String(s.as_ref().to_string()));
+    pub fn value<S: Into<String>>(mut self, s: S) -> Self {
+        self.attr(Attribute::Value, AttrValue::String(s.into()));
         self
     }
 
