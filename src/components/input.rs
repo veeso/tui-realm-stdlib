@@ -171,10 +171,10 @@ impl Input {
         self
     }
 
-    pub fn placeholder<S: AsRef<str>>(mut self, placeholder: S, style: Style) -> Self {
+    pub fn placeholder<S: Into<String>>(mut self, placeholder: S, style: Style) -> Self {
         self.attr(
             Attribute::Custom(INPUT_PLACEHOLDER),
-            AttrValue::String(placeholder.as_ref().to_string()),
+            AttrValue::String(placeholder.into()),
         );
         self.attr(
             Attribute::Custom(INPUT_PLACEHOLDER_STYLE),
