@@ -172,11 +172,8 @@ impl List {
         self
     }
 
-    pub fn highlighted_str<S: AsRef<str>>(mut self, s: S) -> Self {
-        self.attr(
-            Attribute::HighlightedStr,
-            AttrValue::String(s.as_ref().to_string()),
-        );
+    pub fn highlighted_str<S: Into<String>>(mut self, s: S) -> Self {
+        self.attr(Attribute::HighlightedStr, AttrValue::String(s.into()));
         self
     }
 
