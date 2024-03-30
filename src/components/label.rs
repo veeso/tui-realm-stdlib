@@ -33,8 +33,8 @@ impl Label {
         self
     }
 
-    pub fn text<S: AsRef<str>>(mut self, t: S) -> Self {
-        self.attr(Attribute::Text, AttrValue::String(t.as_ref().to_string()));
+    pub fn text<S: Into<String>>(mut self, t: S) -> Self {
+        self.attr(Attribute::Text, AttrValue::String(t.into()));
         self
     }
 
