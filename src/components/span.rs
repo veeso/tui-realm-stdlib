@@ -71,24 +71,30 @@ impl MockComponent for Span {
                 .props
                 .get_or(Attribute::Background, AttrValue::Color(Color::Reset))
                 .unwrap_color();
-            let spans: Vec<TuiSpan> =
-                match self.props.get(Attribute::Text).map(|x| x.unwrap_payload()) {
-                    Some(PropPayload::Vec(spans)) => spans
-                        .iter()
-                        .cloned()
-                        .map(|x| x.unwrap_text_span())
-                        .map(|x| {
-                            // Keep colors and modifiers, or use default
-                            let (fg, bg, modifiers) =
-                                crate::utils::use_or_default_styles(&self.props, &x);
-                            TuiSpan::styled(
-                                x.content,
-                                Style::default().add_modifier(modifiers).fg(fg).bg(bg),
-                            )
-                        })
-                        .collect(),
-                    _ => Vec::new(),
-                };
+            // binding required as "spans" is a reference and otherwise would not live long enough
+            let payload = self.props.get(Attribute::Text).map(|x| x.unwrap_payload());
+            let spans: Vec<TuiSpan> = match payload {
+                Some(PropPayload::Vec(ref spans)) => spans
+                    .iter()
+                    .map(|x| {
+                        // TODO: should this maybe be a new function on `PropValue` similar to the `unwrap` case but for references?
+                        match x {
+                            PropValue::TextSpan(b) => b,
+                            _ => panic!("Called `unwrap_text_span` on a bad value"),
+                        }
+                    })
+                    .map(|x| {
+                        // Keep colors and modifiers, or use default
+                        let (fg, bg, modifiers) =
+                            crate::utils::use_or_default_styles(&self.props, x);
+                        TuiSpan::styled(
+                            &x.content,
+                            Style::default().add_modifier(modifiers).fg(fg).bg(bg),
+                        )
+                    })
+                    .collect(),
+                _ => Vec::new(),
+            };
             let text: Text = Text::from(Spans::from(spans));
             // Text properties
             let alignment: Alignment = self
