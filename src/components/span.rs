@@ -8,7 +8,7 @@ use tuirealm::props::{
     Alignment, AttrValue, Attribute, Color, PropPayload, PropValue, Props, Style, TextModifiers,
     TextSpan,
 };
-use tuirealm::ratatui::text::Line as Spans;
+use tuirealm::ratatui::text::Line;
 use tuirealm::ratatui::{
     layout::Rect,
     text::{Span as TuiSpan, Text},
@@ -95,7 +95,7 @@ impl MockComponent for Span {
                     .collect(),
                 _ => Vec::new(),
             };
-            let text: Text = Text::from(Spans::from(spans));
+            let text: Text = Text::from(Line::from(spans));
             // Text properties
             let alignment: Alignment = self
                 .props
