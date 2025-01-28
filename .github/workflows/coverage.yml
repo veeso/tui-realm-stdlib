@@ -13,10 +13,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: nightly
-          override: true
       - name: Run tests
         uses: actions-rs/cargo@v1
         with:
