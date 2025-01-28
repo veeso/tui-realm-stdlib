@@ -122,7 +122,6 @@ impl TableStates {
 pub struct Table {
     props: Props,
     pub states: TableStates,
-    hg_str: Option<String>, // CRAP CRAP CRAP
 }
 
 impl Table {
@@ -361,11 +360,11 @@ impl MockComponent for Table {
                     ));
             }
             // Highlighted symbol
-            self.hg_str = self
+            let hg_str = self
                 .props
-                .get(Attribute::HighlightedStr)
-                .map(|x| x.unwrap_string());
-            if let Some(hg_str) = &self.hg_str {
+                .get_ref(Attribute::HighlightedStr)
+                .and_then(|x| x.as_string());
+            if let Some(hg_str) = hg_str {
                 table = table.highlight_symbol(hg_str.as_str());
             }
             // Col spacing
