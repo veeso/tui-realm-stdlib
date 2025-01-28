@@ -16,18 +16,11 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: nightly
-      - name: Run tests
-        uses: actions-rs/cargo@v1
+      - uses: taiki-e/install-action@v2
         with:
-          command: test
-          args: --lib --no-fail-fast
-        env:
-          CARGO_INCREMENTAL: "0"
-          RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-          RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-      - name: Coverage with grcov
-        id: coverage
-        uses: actions-rs/grcov@v0.1
+          tool: cargo-llvm-cov
+      - name: Run tests
+        run: cargo llvm-cov --no-fail-fast --workspace --lcov --output-path lcov.info
       - name: Coveralls
         uses: coverallsapp/github-action@v2.3.6
         with:
