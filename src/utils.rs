@@ -19,7 +19,7 @@ use unicode_width::UnicodeWidthStr;
 ///
 /// Given a vector of `TextSpans`, it creates a list of `Spans` which mustn't exceed the provided width parameter.
 /// Each `Spans` in the returned `Vec` is a line in the text.
-pub fn wrap_spans<'a>(spans: &[TextSpan], width: usize, props: &Props) -> Vec<Spans<'a>> {
+pub fn wrap_spans<'a>(spans: &[&TextSpan], width: usize, props: &Props) -> Vec<Spans<'a>> {
     // Prepare result (capacity will be at least spans.len)
     let mut res: Vec<Spans> = Vec::with_capacity(spans.len());
     // Prepare environment
@@ -156,17 +156,20 @@ mod test {
         props.set(Attribute::Background, AttrValue::Color(Color::White));
         // Prepare spans; let's start with two simple spans, which fits the line
         let spans: Vec<TextSpan> = vec![TextSpan::from("hello, "), TextSpan::from("world!")];
+        let spans: Vec<&TextSpan> = spans.iter().collect();
         assert_eq!(wrap_spans(&spans, 64, &props).len(), 1);
         // Let's make a sentence, which would require two lines
         let spans: Vec<TextSpan> = vec![
             TextSpan::from("Hello, everybody, I'm Uncle Camel!"),
             TextSpan::from("How's it going today?"),
         ];
+        let spans: Vec<&TextSpan> = spans.iter().collect();
         assert_eq!(wrap_spans(&spans, 32, &props).len(), 2);
         // Let's make a sentence, which requires 3 lines, but with only one span
         let spans: Vec<TextSpan> = vec![TextSpan::from(
             "Hello everybody! My name is Uncle Camel. How's it going today?",
         )];
+        let spans: Vec<&TextSpan> = spans.iter().collect();
         // makes Hello everybody, my name is uncle, camel. how's it, goind today
         assert_eq!(wrap_spans(&spans, 16, &props).len(), 4);
         // Combine
@@ -176,6 +179,7 @@ mod test {
             TextSpan::from("In posuere sollicitudin vulputate"),
             TextSpan::from("Sed vitae rutrum quam."),
         ];
+        let spans: Vec<&TextSpan> = spans.iter().collect();
         // "Lorem ipsum dolor sit amet,", "consectetur adipiscing elit. Canem!", "In posuere sollicitudin vulputate", "Sed vitae rutrum quam."
         assert_eq!(wrap_spans(&spans, 36, &props).len(), 4);
     }

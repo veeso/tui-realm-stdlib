@@ -197,7 +197,7 @@ impl MockComponent for Textarea {
                     .iter()
                     // this will skip any "PropValue" that is not a "TextSpan", instead of panicing
                     .flat_map(|x| x.as_text_span())
-                    .map(|x| crate::utils::wrap_spans(&[x.clone()], wrap_width, &self.props))
+                    .map(|x| crate::utils::wrap_spans(&[x], wrap_width, &self.props))
                     .map(ListItem::new)
                     .collect(),
                 _ => Vec::new(),
