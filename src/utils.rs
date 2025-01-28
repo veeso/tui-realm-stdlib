@@ -109,13 +109,15 @@ pub fn use_or_default_styles(props: &Props, span: &TextSpan) -> (Color, Color, M
 ///
 /// Construct a block for widget using block properties.
 /// If focus is true the border color is applied, otherwise inactive_style
-pub fn get_block<'a>(
+pub fn get_block<T: AsRef<str>>(
     props: Borders,
-    title: Option<(String, Alignment)>,
+    title: Option<&(T, Alignment)>,
     focus: bool,
     inactive_style: Option<Style>,
-) -> Block<'a> {
-    let title = title.unwrap_or((String::default(), Alignment::Left));
+) -> Block {
+    let title = title
+        .map(|v| (v.0.as_ref(), v.1))
+        .unwrap_or(("", Alignment::Left));
     Block::default()
         .borders(props.sides)
         .border_style(match focus {
@@ -127,6 +129,15 @@ pub fn get_block<'a>(
         .border_type(props.modifiers)
         .title(title.0)
         .title_alignment(title.1)
+}
+
+/// Get the [`Attribute::Title`] or a Centered default
+pub fn get_title_or_center(props: &Props) -> (&str, Alignment) {
+    props
+        .get_ref(Attribute::Title)
+        .and_then(|v| v.as_title())
+        .map(|v| (v.0.as_str(), v.1))
+        .unwrap_or(("", Alignment::Center))
 }
 
 /// ### calc_utf8_cursor_position
@@ -218,11 +229,11 @@ mod test {
             .modifiers(BorderType::Rounded);
         get_block(
             props.clone(),
-            Some(("title".to_string(), Alignment::Center)),
+            Some(&("title", Alignment::Center)),
             true,
             None,
         );
-        get_block(props, None, false, None);
+        get_block::<&str>(props, None, false, None);
     }
 
     #[test]
