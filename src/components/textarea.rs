@@ -188,19 +188,20 @@ impl MockComponent for Textarea {
             // NOTE: wrap width is width of area minus 2 (block) minus width of highlighting string
             let wrap_width =
                 (area.width as usize) - hg_str.as_ref().map(|x| x.width()).unwrap_or(0) - 2;
-            let lines: Vec<ListItem> =
-                match self.props.get(Attribute::Text).map(|x| x.unwrap_payload()) {
-                    Some(PropPayload::Vec(spans)) => spans
-                        .iter()
-                        .cloned()
-                        .map(|x| x.unwrap_text_span())
-                        .map(|x| {
-                            crate::utils::wrap_spans(vec![x].as_slice(), wrap_width, &self.props)
-                        })
-                        .map(ListItem::new)
-                        .collect(),
-                    _ => Vec::new(),
-                };
+            let lines: Vec<ListItem> = match self
+                .props
+                .get_ref(Attribute::Text)
+                .and_then(|x| x.as_payload())
+            {
+                Some(PropPayload::Vec(spans)) => spans
+                    .iter()
+                    // this will skip any "PropValue" that is not a "TextSpan", instead of panicing
+                    .flat_map(|x| x.as_text_span())
+                    .map(|x| crate::utils::wrap_spans(&[x.clone()], wrap_width, &self.props))
+                    .map(ListItem::new)
+                    .collect(),
+                _ => Vec::new(),
+            };
             let foreground = self
                 .props
                 .get_or(Attribute::Foreground, AttrValue::Color(Color::Reset))
