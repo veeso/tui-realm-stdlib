@@ -120,7 +120,6 @@ impl TextareaStates {
 pub struct Textarea {
     props: Props,
     pub states: TextareaStates,
-    hg_str: Option<String>, // CRAP CRAP CRAP
 }
 
 impl Textarea {
@@ -182,13 +181,13 @@ impl MockComponent for Textarea {
         if self.props.get_or(Attribute::Display, AttrValue::Flag(true)) == AttrValue::Flag(true) {
             // Make text items
             // Highlighted symbol
-            self.hg_str = self
+            let hg_str = self
                 .props
-                .get(Attribute::HighlightedStr)
-                .map(|x| x.unwrap_string());
+                .get_ref(Attribute::HighlightedStr)
+                .and_then(|x| x.as_string());
             // NOTE: wrap width is width of area minus 2 (block) minus width of highlighting string
             let wrap_width =
-                (area.width as usize) - self.hg_str.as_ref().map(|x| x.width()).unwrap_or(0) - 2;
+                (area.width as usize) - hg_str.as_ref().map(|x| x.width()).unwrap_or(0) - 2;
             let lines: Vec<ListItem> =
                 match self.props.get(Attribute::Text).map(|x| x.unwrap_payload()) {
                     Some(PropPayload::Vec(spans)) => spans
@@ -255,7 +254,7 @@ impl MockComponent for Textarea {
                         .add_modifier(modifiers),
                 );
 
-            if let Some(hg_str) = &self.hg_str {
+            if let Some(hg_str) = hg_str {
                 list = list.highlight_symbol(hg_str);
             }
             render.render_stateful_widget(list, area, &mut state);
