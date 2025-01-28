@@ -123,7 +123,6 @@ pub struct Table {
     props: Props,
     pub states: TableStates,
     hg_str: Option<String>, // CRAP CRAP CRAP
-    headers: Vec<String>,   // CRAP CRAP CRAP
 }
 
 impl Table {
@@ -378,19 +377,18 @@ impl MockComponent for Table {
                 table = table.column_spacing(spacing);
             }
             // Header
-            self.headers = self
+            let headers: Vec<&str> = self
                 .props
-                .get(Attribute::Text)
-                .map(|x| {
-                    x.unwrap_payload()
-                        .unwrap_vec()
-                        .into_iter()
-                        .map(|x| x.unwrap_str())
+                .get_ref(Attribute::Text)
+                .and_then(|v| v.as_payload())
+                .and_then(|v| v.as_vec())
+                .map(|v| {
+                    v.iter()
+                        .flat_map(|v| v.as_str().map(|v| v.as_str()))
                         .collect()
                 })
                 .unwrap_or_default();
-            if !self.headers.is_empty() {
-                let headers: Vec<&str> = self.headers.iter().map(|x| x.as_str()).collect();
+            if !headers.is_empty() {
                 table = table.header(
                     Row::new(headers)
                         .style(
