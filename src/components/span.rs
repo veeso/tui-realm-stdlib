@@ -72,7 +72,10 @@ impl MockComponent for Span {
                 .get_or(Attribute::Background, AttrValue::Color(Color::Reset))
                 .unwrap_color();
             // binding required as "spans" is a reference and otherwise would not live long enough
-            let payload = self.props.get(Attribute::Text).map(|x| x.unwrap_payload());
+            let payload = self
+                .props
+                .get_ref(Attribute::Text)
+                .and_then(|x| x.as_payload());
             let spans: Vec<TuiSpan> = match payload {
                 Some(PropPayload::Vec(ref spans)) => spans
                     .iter()
