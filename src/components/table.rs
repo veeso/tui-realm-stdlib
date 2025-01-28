@@ -316,7 +316,10 @@ impl MockComponent for Table {
                 .get_or(Attribute::Height, AttrValue::Size(1))
                 .unwrap_size();
             // Make rows
-            let rows: Vec<Row> = match self.props.get(Attribute::Content).map(|x| x.unwrap_table())
+            let rows: Vec<Row> = match self
+                .props
+                .get_ref(Attribute::Content)
+                .and_then(|x| x.as_table())
             {
                 Some(table) => table
                     .iter()
@@ -327,7 +330,7 @@ impl MockComponent for Table {
                                 let (fg, bg, modifiers) =
                                     crate::utils::use_or_default_styles(&self.props, col);
                                 Cell::from(Span::styled(
-                                    col.content.clone(),
+                                    &col.content,
                                     Style::default().add_modifier(modifiers).fg(fg).bg(bg),
                                 ))
                             })
