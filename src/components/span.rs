@@ -76,13 +76,8 @@ impl MockComponent for Span {
             let spans: Vec<TuiSpan> = match payload {
                 Some(PropPayload::Vec(ref spans)) => spans
                     .iter()
-                    .map(|x| {
-                        // TODO: should this maybe be a new function on `PropValue` similar to the `unwrap` case but for references?
-                        match x {
-                            PropValue::TextSpan(b) => b,
-                            _ => panic!("Called `unwrap_text_span` on a bad value"),
-                        }
-                    })
+                    // this will skip any "PropValue" that is not a "TextSpan", instead of panicing
+                    .flat_map(|x| x.as_text_span())
                     .map(|x| {
                         // Keep colors and modifiers, or use default
                         let (fg, bg, modifiers) =
