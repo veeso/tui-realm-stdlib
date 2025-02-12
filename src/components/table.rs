@@ -350,12 +350,13 @@ impl MockComponent for Table {
                 inactive_style,
             ));
             if let Some(highlighted_color) = highlighted_color {
-                table = table.highlight_style(Style::default().fg(highlighted_color).add_modifier(
-                    match focus {
-                        true => modifiers | TextModifiers::REVERSED,
-                        false => modifiers,
-                    },
-                ));
+                table =
+                    table.row_highlight_style(Style::default().fg(highlighted_color).add_modifier(
+                        match focus {
+                            true => modifiers | TextModifiers::REVERSED,
+                            false => modifiers,
+                        },
+                    ));
             }
             // Highlighted symbol
             self.hg_str = self
