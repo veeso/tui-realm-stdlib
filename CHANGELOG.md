@@ -34,6 +34,8 @@ Unreleased
 - Change `Paragraph::text` to take a iterator to clone less values.
 - Change `Canvas::data` to take a iterator to clone less values.
 - Change `Chart::data` to take a iterator to clone less values.
+- Change `CheckboxStates::set_choices` to take a `Into<Vec<String>>` to clone less values.
+- Change `Checkbox::choices` to take a iterator to clone less values.
 
 ## 2.0.1
 
