@@ -42,6 +42,7 @@ Unreleased
 - Change `RadioStates::choices` to take a iterator to clone less values.
 - Change `SelectStates::set_choices` to take a `Into<Vec<String>>` to clone less values.
 - Change `Select::choices` to take a iterator to clone less values.
+- Change `Table::headers` to take a iterator to clone less values.
 
 ## 2.0.1
 
