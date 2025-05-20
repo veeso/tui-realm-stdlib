@@ -101,8 +101,7 @@ impl LineGauge {
             LINE_GAUGE_STYLE_ROUND,
             LINE_GAUGE_STYLE_THICK,
         ]
-        .iter()
-        .any(|x| *x == s))
+        .contains(&s))
         {
             panic!("Invalid line style");
         }
