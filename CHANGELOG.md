@@ -27,6 +27,12 @@
 
 ---
 
+## next
+
+Unreleased
+
+- Change `Paragraph::text` to take a iterator to clone less values.
+
 ## 2.0.1
 
 Released on 13/10/2024
