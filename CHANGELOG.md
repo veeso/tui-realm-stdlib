@@ -33,6 +33,7 @@ Unreleased
 
 - Change `Paragraph::text` to take a iterator to clone less values.
 - Change `Canvas::data` to take a iterator to clone less values.
+- Change `Chart::data` to take a iterator to clone less values.
 
 ## 2.0.1
 

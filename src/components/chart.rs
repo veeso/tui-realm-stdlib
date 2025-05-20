@@ -120,11 +120,11 @@ impl Chart {
         self
     }
 
-    pub fn data(mut self, data: &[Dataset]) -> Self {
+    pub fn data(mut self, data: impl IntoIterator<Item = Dataset>) -> Self {
         self.props.set(
             Attribute::Dataset,
             AttrValue::Payload(PropPayload::Vec(
-                data.iter().cloned().map(PropValue::Dataset).collect(),
+                data.into_iter().map(PropValue::Dataset).collect(),
             )),
         );
         self
@@ -476,7 +476,7 @@ mod test {
             .y_labels(&["-5", "0", "5", "10", "15", "20", "25", "30", "35"])
             .y_style(Style::default().fg(Color::LightYellow))
             .y_title("Month")
-            .data(&[
+            .data([
                 Dataset::default()
                     .name("Minimum")
                     .graph_type(GraphType::Scatter)
@@ -544,7 +544,7 @@ mod test {
         assert_eq!(component.is_disabled(), false);
         assert_eq!(component.get_data(2).len(), 2);
 
-        let mut comp = Chart::default().data(&[Dataset::default()
+        let mut comp = Chart::default().data([Dataset::default()
             .name("Maximum")
             .graph_type(GraphType::Line)
             .marker(Marker::Dot)
