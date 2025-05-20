@@ -271,6 +271,35 @@ impl Table {
                 .collect()
         }
     }
+
+    /// Generate [`Row`]s from a 2d vector of [`TextSpan`](tuirealm::props::TextSpan)s in props [`Attribute::Content`].
+    fn make_rows(&self, row_height: u16) -> Vec<Row> {
+        let Some(table) = self
+            .props
+            .get_ref(Attribute::Content)
+            .and_then(|x| x.as_table())
+        else {
+            return Vec::new();
+        };
+
+        table
+            .iter()
+            .map(|row| {
+                let columns: Vec<Cell> = row
+                    .iter()
+                    .map(|col| {
+                        let (fg, bg, modifiers) =
+                            crate::utils::use_or_default_styles(&self.props, col);
+                        Cell::from(Span::styled(
+                            &col.content,
+                            Style::default().add_modifier(modifiers).fg(fg).bg(bg),
+                        ))
+                    })
+                    .collect();
+                Row::new(columns).height(row_height)
+            })
+            .collect() // Make List item from TextSpan
+    }
 }
 
 impl MockComponent for Table {
@@ -309,30 +338,7 @@ impl MockComponent for Table {
                 .get_or(Attribute::Height, AttrValue::Size(1))
                 .unwrap_size();
             // Make rows
-            let rows: Vec<Row> = match self
-                .props
-                .get_ref(Attribute::Content)
-                .and_then(|x| x.as_table())
-            {
-                Some(table) => table
-                    .iter()
-                    .map(|row| {
-                        let columns: Vec<Cell> = row
-                            .iter()
-                            .map(|col| {
-                                let (fg, bg, modifiers) =
-                                    crate::utils::use_or_default_styles(&self.props, col);
-                                Cell::from(Span::styled(
-                                    &col.content,
-                                    Style::default().add_modifier(modifiers).fg(fg).bg(bg),
-                                ))
-                            })
-                            .collect();
-                        Row::new(columns).height(row_height)
-                    })
-                    .collect(), // Make List item from TextSpan
-                _ => Vec::new(),
-            };
+            let rows: Vec<Row> = self.make_rows(row_height);
             let highlighted_color = self
                 .props
                 .get(Attribute::HighlightedColor)
