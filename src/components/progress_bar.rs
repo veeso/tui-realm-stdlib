@@ -171,7 +171,7 @@ mod test {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic = "Progress value must be in range [0.0, 1.0]"]
     fn test_components_progress_bar_bad_prog() {
         ProgressBar::default()
             .background(Color::Red)

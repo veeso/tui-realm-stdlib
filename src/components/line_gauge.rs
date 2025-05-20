@@ -225,7 +225,7 @@ mod test {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic = "Progress value must be in range [0.0, 1.0]"]
     fn line_gauge_bad_prog() {
         LineGauge::default()
             .background(Color::Red)
@@ -237,7 +237,7 @@ mod test {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic = "Invalid line style"]
     fn line_gauge_bad_symbol() {
         LineGauge::default()
             .background(Color::Red)
