@@ -22,6 +22,7 @@ use tuirealm::{Frame, MockComponent, State};
 ///
 /// represents a read-only text component without any container, but with multy-style text parts
 #[derive(Default)]
+#[must_use]
 pub struct Span {
     props: Props,
 }

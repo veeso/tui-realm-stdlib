@@ -27,6 +27,7 @@ use super::props::{
 ///
 /// The Canvas widget may be used to draw more detailed figures using braille patterns (each cell can have a braille character in 8 different positions).
 #[derive(Default)]
+#[must_use]
 pub struct Canvas {
     props: Props,
 }

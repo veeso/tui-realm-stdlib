@@ -90,6 +90,7 @@ impl CheckboxStates {
     /// ### has
     ///
     /// Returns whether selection contains option
+    #[must_use]
     pub fn has(&self, option: usize) -> bool {
         self.selection.contains(&option)
     }
@@ -119,6 +120,7 @@ impl CheckboxStates {
 ///
 /// Checkbox component represents a group of tabs to select from
 #[derive(Default)]
+#[must_use]
 pub struct Checkbox {
     props: Props,
     pub states: CheckboxStates,

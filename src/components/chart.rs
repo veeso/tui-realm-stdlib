@@ -83,6 +83,7 @@ impl ChartStates {
 ///
 /// While in active mode (default) you can put as many entries as you wish. You can move with arrows and END/HOME keys
 #[derive(Default)]
+#[must_use]
 pub struct Chart {
     props: Props,
     pub states: ChartStates,

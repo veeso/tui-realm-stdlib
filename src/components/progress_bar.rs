@@ -16,6 +16,7 @@ use tuirealm::{Frame, MockComponent, State};
 ///
 /// provides a component which shows the progress. It is possible to set the style for the progress bar and the text shown above it.
 #[derive(Default)]
+#[must_use]
 pub struct ProgressBar {
     props: Props,
 }
@@ -173,7 +174,7 @@ mod test {
     #[test]
     #[should_panic = "Progress value must be in range [0.0, 1.0]"]
     fn test_components_progress_bar_bad_prog() {
-        ProgressBar::default()
+        let _ = ProgressBar::default()
             .background(Color::Red)
             .foreground(Color::White)
             .progress(6.0)

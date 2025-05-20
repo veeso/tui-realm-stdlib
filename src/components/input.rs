@@ -90,6 +90,7 @@ impl InputStates {
     /// ### render_value
     ///
     /// Get value as string to render
+    #[must_use]
     pub fn render_value(&self, itype: InputType) -> String {
         self.render_value_chars(itype).iter().collect::<String>()
     }
@@ -97,6 +98,7 @@ impl InputStates {
     /// ### render_value_chars
     ///
     /// Render value as a vec of chars
+    #[must_use]
     pub fn render_value_chars(&self, itype: InputType) -> Vec<char> {
         match itype {
             InputType::Password(ch) | InputType::CustomPassword(ch, _, _) => {
@@ -109,6 +111,7 @@ impl InputStates {
     /// ### get_value
     ///
     /// Get value as string
+    #[must_use]
     pub fn get_value(&self) -> String {
         self.input.iter().collect()
     }
@@ -120,6 +123,7 @@ impl InputStates {
 ///
 /// Input list component
 #[derive(Default)]
+#[must_use]
 pub struct Input {
     props: Props,
     pub states: InputStates,

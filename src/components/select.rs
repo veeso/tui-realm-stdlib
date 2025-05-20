@@ -104,6 +104,7 @@ impl SelectStates {
     /// ### is_tab_open
     ///
     /// Returns whether the tab is open
+    #[must_use]
     pub fn is_tab_open(&self) -> bool {
         self.tab_open
     }
@@ -112,6 +113,7 @@ impl SelectStates {
 // -- component
 
 #[derive(Default)]
+#[must_use]
 pub struct Select {
     props: Props,
     pub states: SelectStates,

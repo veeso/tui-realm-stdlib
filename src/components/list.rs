@@ -87,6 +87,7 @@ impl ListStates {
     /// ### calc_max_step_ahead
     ///
     /// Calculate the max step ahead to scroll list
+    #[must_use]
     pub fn calc_max_step_ahead(&self, max: usize) -> usize {
         let remaining: usize = match self.list_len {
             0 => 0,
@@ -102,6 +103,7 @@ impl ListStates {
     /// ### calc_max_step_ahead
     ///
     /// Calculate the max step ahead to scroll list
+    #[must_use]
     pub fn calc_max_step_behind(&self, max: usize) -> usize {
         if self.list_index > max {
             max
@@ -117,6 +119,7 @@ impl ListStates {
 ///
 /// represents a read-only text component without any container.
 #[derive(Default)]
+#[must_use]
 pub struct List {
     props: Props,
     pub states: ListStates,

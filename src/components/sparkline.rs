@@ -15,6 +15,7 @@ use tuirealm::{Frame, MockComponent, State};
 ///
 /// A sparkline over more lines
 #[derive(Default)]
+#[must_use]
 pub struct Sparkline {
     props: Props,
 }

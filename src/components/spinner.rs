@@ -50,6 +50,7 @@ impl SpinnerStates {
 ///
 /// A textual spinner which step changes at each `view()` call
 #[derive(Default)]
+#[must_use]
 pub struct Spinner {
     props: Props,
     pub states: SpinnerStates,

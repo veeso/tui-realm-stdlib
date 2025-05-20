@@ -97,6 +97,7 @@ impl RadioStates {
 ///
 /// Radio component represents a group of tabs to select from
 #[derive(Default)]
+#[must_use]
 pub struct Radio {
     props: Props,
     pub states: RadioStates,
