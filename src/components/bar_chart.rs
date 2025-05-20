@@ -246,12 +246,12 @@ impl MockComponent for BarChart {
             let mut div = crate::utils::get_block(borders, title, active, inactive_style);
             div = div.style(Style::default().bg(background).fg(foreground));
             // Get max elements
-            let data_max_len: u64 = self
+            let data_max_len = self
                 .props
                 .get(Attribute::Custom(BAR_CHART_MAX_BARS))
-                .map_or(self.data_len() as u64, |x| x.unwrap_length() as u64);
+                .map_or(self.data_len(), |x| x.unwrap_length());
             // Get data
-            let data = self.get_data(self.states.cursor, data_max_len as usize);
+            let data = self.get_data(self.states.cursor, data_max_len);
             let data_ref: Vec<(&str, u64)> = data.iter().map(|x| (x.0.as_str(), x.1)).collect();
             // Create widget
             let mut widget: TuiBarChart =
