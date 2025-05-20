@@ -53,11 +53,7 @@ impl Default for Model {
         let mut app: Application<Id, Msg, UserEvent> = Application::init(
             EventListenerCfg::default()
                 .crossterm_input_listener(Duration::from_millis(10), 10)
-                .add_port(
-                    Box::new(DataGen::new(0 as u64, 64 as u64)),
-                    Duration::from_millis(100),
-                    1,
-                ),
+                .add_port(Box::new(DataGen::new(0, 64)), Duration::from_millis(100), 1),
         );
         assert!(app
             .mount(
