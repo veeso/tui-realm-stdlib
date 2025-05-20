@@ -127,9 +127,8 @@ mod tests {
     #[test]
     fn test_various_text_inputs() {
         let _ = Label::default().text("str");
-        let _ = Label::default().text(*&"*&str");
         let _ = Label::default().text(String::from("String"));
+        #[allow(clippy::needless_borrows_for_generic_args)] // explicitly test references to string working
         let _ = Label::default().text(&String::from("&String"));
-        let _ = Label::default().text(format!("Format"));
     }
 }
