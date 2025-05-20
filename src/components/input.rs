@@ -257,33 +257,34 @@ impl MockComponent for Input {
             let text_to_display = self.states.render_value(self.get_input_type());
             let show_placeholder = text_to_display.is_empty();
             // Choose whether to show placeholder; if placeholder is unset, show nothing
-            let text_to_display = match show_placeholder {
-                true => self
-                    .props
+            let text_to_display = if show_placeholder {
+                self.props
                     .get_or(
                         Attribute::Custom(INPUT_PLACEHOLDER),
                         AttrValue::String(String::new()),
                     )
-                    .unwrap_string(),
-                false => text_to_display,
+                    .unwrap_string()
+            } else {
+                text_to_display
             };
             // Choose paragraph style based on whether is valid or not and if has focus and if should show placeholder
-            let paragraph_style = match focus {
-                true => Style::default()
+            let paragraph_style = if focus {
+                Style::default()
                     .fg(foreground)
                     .bg(background)
-                    .add_modifier(modifiers),
-                false => inactive_style.unwrap_or_default(),
+                    .add_modifier(modifiers)
+            } else {
+                inactive_style.unwrap_or_default()
             };
-            let paragraph_style = match show_placeholder {
-                true => self
-                    .props
+            let paragraph_style = if show_placeholder {
+                self.props
                     .get_or(
                         Attribute::Custom(INPUT_PLACEHOLDER_STYLE),
                         AttrValue::Style(paragraph_style),
                     )
-                    .unwrap_style(),
-                false => paragraph_style,
+                    .unwrap_style()
+            } else {
+                paragraph_style
             };
             // Create widget
             let block_inner_area = block.inner(area);
@@ -327,7 +328,7 @@ impl MockComponent for Input {
             self.states.cursor = 0;
             let itype = self.get_input_type();
             let max_len = self.get_input_len();
-            for ch in input.into_iter() {
+            for ch in input {
                 self.states.append(ch, &itype, max_len);
             }
         }
@@ -348,20 +349,20 @@ impl MockComponent for Input {
                 // Backspace and None
                 let prev_input = self.states.input.clone();
                 self.states.backspace();
-                if prev_input != self.states.input {
-                    CmdResult::Changed(self.state())
-                } else {
+                if prev_input == self.states.input {
                     CmdResult::None
+                } else {
+                    CmdResult::Changed(self.state())
                 }
             }
             Cmd::Cancel => {
                 // Delete and None
                 let prev_input = self.states.input.clone();
                 self.states.delete();
-                if prev_input != self.states.input {
-                    CmdResult::Changed(self.state())
-                } else {
+                if prev_input == self.states.input {
                     CmdResult::None
+                } else {
+                    CmdResult::Changed(self.state())
                 }
             }
             Cmd::Submit => CmdResult::Submit(self.state()),
@@ -387,10 +388,10 @@ impl MockComponent for Input {
                 self.states
                     .append(ch, &self.get_input_type(), self.get_input_len());
                 // Message on change
-                if prev_input != self.states.input {
-                    CmdResult::Changed(self.state())
-                } else {
+                if prev_input == self.states.input {
                     CmdResult::None
+                } else {
+                    CmdResult::Changed(self.state())
                 }
             }
             _ => CmdResult::None,
@@ -501,25 +502,25 @@ mod tests {
         component.states.cursor = 1;
         assert_eq!(
             component.perform(Cmd::Delete),
-            CmdResult::Changed(State::One(StateValue::String(String::from(""))))
+            CmdResult::Changed(State::One(StateValue::String(String::new())))
         );
         assert_eq!(
             component.state(),
-            State::One(StateValue::String(String::from("")))
+            State::One(StateValue::String(String::new()))
         );
         assert_eq!(component.states.cursor, 0);
         // Another one...
         assert_eq!(component.perform(Cmd::Delete), CmdResult::None);
         assert_eq!(
             component.state(),
-            State::One(StateValue::String(String::from("")))
+            State::One(StateValue::String(String::new()))
         );
         assert_eq!(component.states.cursor, 0);
         // See del behaviour here
         assert_eq!(component.perform(Cmd::Cancel), CmdResult::None);
         assert_eq!(
             component.state(),
-            State::One(StateValue::String(String::from("")))
+            State::One(StateValue::String(String::new()))
         );
         assert_eq!(component.states.cursor, 0);
         // Check del behaviour

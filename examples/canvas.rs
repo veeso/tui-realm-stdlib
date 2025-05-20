@@ -72,7 +72,7 @@ fn main() {
     while !model.quit {
         // Tick
         if let Ok(messages) = model.app.tick(PollStrategy::Once) {
-            for msg in messages.into_iter() {
+            for msg in messages {
                 model.redraw = true;
                 let mut msg = Some(msg);
                 while msg.is_some() {

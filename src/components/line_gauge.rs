@@ -100,16 +100,18 @@ impl LineGauge {
             LINE_GAUGE_STYLE_NORMAL,
             LINE_GAUGE_STYLE_ROUND,
             LINE_GAUGE_STYLE_THICK,
-        ].contains(&s))
+        ]
+        .contains(&s))
         {
             panic!("Invalid line style");
         }
     }
 
     fn assert_progress(p: f64) {
-        if !(0.0..=1.0).contains(&p) {
-            panic!("Progress value must be in range [0.0, 1.0]");
-        }
+        assert!(
+            (0.0..=1.0).contains(&p),
+            "Progress value must be in range [0.0, 1.0]"
+        );
     }
 }
 
@@ -189,7 +191,7 @@ impl MockComponent for LineGauge {
                 Self::assert_progress(p.unwrap_one().unwrap_f64());
             }
         }
-        self.props.set(attr, value)
+        self.props.set(attr, value);
     }
 
     fn state(&self) -> State {

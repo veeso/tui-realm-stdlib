@@ -179,14 +179,12 @@ impl MockComponent for Canvas {
                 .props
                 .get(Attribute::Custom(CANVAS_X_BOUNDS))
                 .map(|x| x.unwrap_payload().unwrap_tup2())
-                .map(|(a, b)| [a.unwrap_f64(), b.unwrap_f64()])
-                .unwrap_or([0.0, 0.0]);
+                .map_or([0.0, 0.0], |(a, b)| [a.unwrap_f64(), b.unwrap_f64()]);
             let y_bounds: [f64; 2] = self
                 .props
                 .get(Attribute::Custom(CANVAS_Y_BOUNDS))
                 .map(|x| x.unwrap_payload().unwrap_tup2())
-                .map(|(a, b)| [a.unwrap_f64(), b.unwrap_f64()])
-                .unwrap_or([0.0, 0.0]);
+                .map_or([0.0, 0.0], |(a, b)| [a.unwrap_f64(), b.unwrap_f64()]);
             // Get shapes
             let shapes: Vec<Shape> = self
                 .props
@@ -218,7 +216,7 @@ impl MockComponent for Canvas {
     }
 
     fn attr(&mut self, attr: Attribute, value: AttrValue) {
-        self.props.set(attr, value)
+        self.props.set(attr, value);
     }
 
     fn state(&self) -> State {

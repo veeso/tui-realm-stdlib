@@ -226,16 +226,15 @@ impl MockComponent for Checkbox {
                 .iter()
                 .enumerate()
                 .map(|(idx, x)| {
-                    let checkbox: &str = match self.states.has(idx) {
-                        true => "☑ ",
-                        false => "☐ ",
-                    };
-                    let (fg, bg) = match focus {
-                        true => match self.states.choice == idx {
-                            true => (fg, bg),
-                            false => (bg, fg),
-                        },
-                        false => (fg, bg),
+                    let checkbox: &str = if self.states.has(idx) { "☑ " } else { "☐ " };
+                    let (fg, bg) = if focus {
+                        if self.states.choice == idx {
+                            (fg, bg)
+                        } else {
+                            (bg, fg)
+                        }
+                    } else {
+                        (fg, bg)
                     };
                     // Make spans
                     Spans::from(vec![
@@ -270,7 +269,7 @@ impl MockComponent for Checkbox {
                     .collect();
                 self.states.set_choices(&choices);
                 // Preserve selection if possible
-                for c in current_selection.into_iter() {
+                for c in current_selection {
                     self.states.select(c);
                 }
             }

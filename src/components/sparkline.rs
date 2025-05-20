@@ -61,8 +61,7 @@ impl Sparkline {
     fn data_len(&self) -> usize {
         self.props
             .get(Attribute::Dataset)
-            .map(|x| x.unwrap_payload().unwrap_vec().len())
-            .unwrap_or(0)
+            .map_or(0, |x| x.unwrap_payload().unwrap_vec().len())
     }
 
     /// ### data
@@ -126,7 +125,7 @@ impl MockComponent for Sparkline {
     }
 
     fn attr(&mut self, attr: Attribute, value: AttrValue) {
-        self.props.set(attr, value)
+        self.props.set(attr, value);
     }
 
     fn state(&self) -> State {

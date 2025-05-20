@@ -238,9 +238,10 @@ impl Select {
             .get(Attribute::FocusStyle)
             .map(|x| x.unwrap_style());
         let p: Paragraph = Paragraph::new(selected_text)
-            .style(match focus {
-                true => borders.style(),
-                false => inactive_style.unwrap_or_default(),
+            .style(if focus {
+                borders.style()
+            } else {
+                inactive_style.unwrap_or_default()
             })
             .block(block);
         render.render_widget(p, chunks[0]);
@@ -250,9 +251,10 @@ impl Select {
             .block(
                 Block::default()
                     .borders(BorderSides::LEFT | BorderSides::BOTTOM | BorderSides::RIGHT)
-                    .border_style(match focus {
-                        true => borders.style(),
-                        false => Style::default(),
+                    .border_style(if focus {
+                        borders.style()
+                    } else {
+                        Style::default()
                     })
                     .border_type(borders.modifiers)
                     .style(Style::default().bg(background)),
@@ -297,17 +299,19 @@ impl Select {
             .props
             .get_or(Attribute::Focus, AttrValue::Flag(false))
             .unwrap_flag();
-        let style = match focus {
-            true => Style::default().bg(background).fg(foreground),
-            false => inactive_style.unwrap_or_default(),
+        let style = if focus {
+            Style::default().bg(background).fg(foreground)
+        } else {
+            inactive_style.unwrap_or_default()
         };
         let borders = self
             .props
             .get_or(Attribute::Borders, AttrValue::Borders(Borders::default()))
             .unwrap_borders();
-        let borders_style = match focus {
-            true => borders.style(),
-            false => inactive_style.unwrap_or_default(),
+        let borders_style = if focus {
+            borders.style()
+        } else {
+            inactive_style.unwrap_or_default()
         };
         let block: Block = Block::default()
             .borders(BorderSides::ALL)
@@ -337,9 +341,10 @@ impl Select {
 impl MockComponent for Select {
     fn view(&mut self, render: &mut Frame, area: Rect) {
         if self.props.get_or(Attribute::Display, AttrValue::Flag(true)) == AttrValue::Flag(true) {
-            match self.states.is_tab_open() {
-                true => self.render_open_tab(render, area),
-                false => self.render_closed_tab(render, area),
+            if self.states.is_tab_open() {
+                self.render_open_tab(render, area);
+            } else {
+                self.render_closed_tab(render, area);
             }
         }
     }
@@ -390,18 +395,20 @@ impl MockComponent for Select {
                 // Increment choice
                 self.states.next_choice(self.rewindable());
                 // Return CmdResult On Change or None if tab is closed
-                match self.states.is_tab_open() {
-                    false => CmdResult::None,
-                    true => CmdResult::Changed(State::One(StateValue::Usize(self.states.selected))),
+                if self.states.is_tab_open() {
+                    CmdResult::Changed(State::One(StateValue::Usize(self.states.selected)))
+                } else {
+                    CmdResult::None
                 }
             }
             Cmd::Move(Direction::Up) => {
                 // Increment choice
                 self.states.prev_choice(self.rewindable());
                 // Return CmdResult On Change or None if tab is closed
-                match self.states.is_tab_open() {
-                    false => CmdResult::None,
-                    true => CmdResult::Changed(State::One(StateValue::Usize(self.states.selected))),
+                if self.states.is_tab_open() {
+                    CmdResult::Changed(State::One(StateValue::Usize(self.states.selected)))
+                } else {
+                    CmdResult::None
                 }
             }
             Cmd::Cancel => {

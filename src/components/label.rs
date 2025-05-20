@@ -53,8 +53,7 @@ impl MockComponent for Label {
                 .props
                 .get_ref(Attribute::Text)
                 .and_then(|v| v.as_string())
-                .map(|v| v.as_str())
-                .unwrap_or("");
+                .map_or("", |v| v.as_str());
             let foreground = self
                 .props
                 .get_or(Attribute::Foreground, AttrValue::Color(Color::Reset))
@@ -93,7 +92,7 @@ impl MockComponent for Label {
     }
 
     fn attr(&mut self, attr: Attribute, value: AttrValue) {
-        self.props.set(attr, value)
+        self.props.set(attr, value);
     }
 
     fn state(&self) -> State {
@@ -128,7 +127,8 @@ mod tests {
     fn test_various_text_inputs() {
         let _ = Label::default().text("str");
         let _ = Label::default().text(String::from("String"));
-        #[allow(clippy::needless_borrows_for_generic_args)] // explicitly test references to string working
+        // explicitly test references to string working
+        #[allow(clippy::needless_borrows_for_generic_args)]
         let _ = Label::default().text(&String::from("&String"));
     }
 }
