@@ -28,6 +28,12 @@
 
 ---
 
+## next
+
+Unreleased
+
+- [Issue 35](https://github.com/veeso/tui-realm-stdlib/issues/35): dont let the `Input`'s cursor escape the component's area
+
 ## 3.0.0
 
 Released on 07/06/2025
