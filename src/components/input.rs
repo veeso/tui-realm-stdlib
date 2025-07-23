@@ -382,7 +382,7 @@ impl MockComponent for Input {
             render.render_widget(p, area);
 
             // Set cursor, if focus
-            if focus {
+            if focus && !block_inner_area.is_empty() {
                 let x: u16 = block_inner_area.x
                     + calc_utf8_cursor_position(
                         &self.states.render_value_chars(itype)[0..self.states.cursor],
