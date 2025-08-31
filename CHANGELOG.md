@@ -28,6 +28,12 @@
 
 ---
 
+## next
+
+Unreleased
+
+- Change `ProgressBar` to enable ratatui Gauge option `use_unicode` for smoother progressbars.
+
 ## 3.0.0
 
 Released on 07/06/2025

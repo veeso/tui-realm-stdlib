@@ -123,7 +123,8 @@ impl MockComponent for ProgressBar {
                             .add_modifier(modifiers),
                     )
                     .label(label)
-                    .ratio(percentage),
+                    .ratio(percentage)
+                    .use_unicode(true),
                 area,
             );
         }
