@@ -33,6 +33,7 @@
 Unreleased
 
 - Change `ProgressBar` to enable ratatui Gauge option `use_unicode` for smoother progressbars.
+- Fix a bunch of styling inconsistencies. (re #43)
 
 ## 3.0.0
 
