@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        toolchain: [stable, "1.86"]
+        toolchain: [ stable, "1.86" ]
     steps:
       - uses: actions/checkout@v2
       - name: Install Toolchain
@@ -76,70 +76,9 @@ jobs:
           flag-name: ${{ github.job }}-${{ join(matrix.*, '-') }}
           parallel: true
 
-  # test-win:
-  #   runs-on: windows-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       toolchain: [stable, "1.86"]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install Toolchain
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         toolchain: ${{ matrix.toolchain }}
-  #         components: llvm-tools-preview
-  #     - uses: Swatinem/rust-cache@v2
-  #     - uses: taiki-e/install-action@v2
-  #       with:
-  #         tool: cargo-llvm-cov
-  #     - name: Cargo Check
-  #       run: cargo build --features async-ports,serialize
-  #     - name: Test
-  #       # This tests both crossterm
-  #       # Does NOT run termion, as that is is unix only
-  #       run: cargo llvm-cov --no-fail-fast --features async-ports,serialize --workspace --lcov --output-path lcov.info --no-cfg-coverage
-  #     - name: Coveralls
-  #       uses: coverallsapp/github-action@v2.3.6
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         file: lcov.info
-  #         flag-name: ${{ github.job }}-${{ join(matrix.*, '-') }}
-  #         parallel: true
-
-  # test-mac:
-  #   runs-on: macos-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       toolchain: [stable, "1.86"]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install Toolchain
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         toolchain: ${{ matrix.toolchain }}
-  #         components: llvm-tools-preview
-  #     - uses: Swatinem/rust-cache@v2
-  #     - uses: taiki-e/install-action@v2
-  #       with:
-  #         tool: cargo-llvm-cov
-  #     - name: Cargo Check
-  #       run: cargo build --all-features
-  #     - name: Test
-  #       # This tests both crossterm and termion
-  #       run: cargo llvm-cov --no-fail-fast --all-features --workspace --lcov --output-path lcov.info --no-cfg-coverage
-  #     - name: Coveralls
-  #       uses: coverallsapp/github-action@v2.3.6
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         file: lcov.info
-  #         flag-name: ${{ github.job }}-${{ join(matrix.*, '-') }}
-  #         parallel: true
-
   finish-coveralls:
     runs-on: ubuntu-latest
-    needs: [test-linux] # test-win, test-mac
+    needs: [ test-linux ]
     steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v2
